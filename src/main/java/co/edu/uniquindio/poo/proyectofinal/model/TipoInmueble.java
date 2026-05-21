@@ -1,4 +1,4 @@
-package model;
+package co.edu.uniquindio.poo.proyectofinal.model;
 
 public enum TipoInmueble {
     CASA,

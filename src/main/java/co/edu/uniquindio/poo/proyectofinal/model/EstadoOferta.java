@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.proyectofinal;
+package co.edu.uniquindio.poo.proyectofinal.model;
 
 public enum EstadoOferta {
     PENDIENTE,
