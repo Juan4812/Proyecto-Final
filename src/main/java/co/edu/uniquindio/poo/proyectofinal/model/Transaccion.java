@@ -13,6 +13,12 @@ public class Transaccion {
 
     public Transaccion(int codigoTransaccion, Comprador comprador, Vendedor vendedor,
                        Inmueble inmueble, double valorFinal, TipoOperacion tipoOperacion) {
+        if (comprador == null) throw new IllegalArgumentException("El comprador es obligatorio");
+        if (vendedor == null) throw new IllegalArgumentException("El vendedor es obligatorio");
+        if (inmueble == null) throw new IllegalArgumentException("El inmueble es obligatorio");
+        if (valorFinal <= 0) throw new IllegalArgumentException("El valor final debe ser mayor a 0");
+        if (tipoOperacion == null) throw new IllegalArgumentException("El tipo de operacion es obligatorio");
+
         this.codigoTransaccion = codigoTransaccion;
         this.comprador = comprador;
         this.vendedor = vendedor;
@@ -32,11 +38,6 @@ public class Transaccion {
 
     @Override
     public String toString() {
-        return "Transacción #" + codigoTransaccion + " | " + tipoOperacion +
-               " | Inmueble: " + inmueble.getCodigo() +
-               " | Valor: $" + valorFinal +
-               " | Comprador: " + comprador.getNombre() +
-               " | Vendedor: " + vendedor.getNombre() +
-               " | Fecha: " + fecha;
+        return "Transaccion " + codigoTransaccion + " - " + tipoOperacion + " - $" + valorFinal;
     }
 }

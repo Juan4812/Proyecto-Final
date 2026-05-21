@@ -10,6 +10,11 @@ public abstract class Usuario {
     private String clasificacion;
 
     public Usuario(int id, String nombre, String identificacion, String telefono, String correo) {
+        validarTexto(nombre, "El nombre es obligatorio");
+        validarTexto(identificacion, "La identificacion es obligatoria");
+        validarTexto(telefono, "El telefono es obligatorio");
+        validarTexto(correo, "El correo es obligatorio");
+
         this.id = id;
         this.nombre = nombre;
         this.identificacion = identificacion;
@@ -19,7 +24,6 @@ public abstract class Usuario {
         this.clasificacion = "Principiante";
     }
 
-    // Getters y Setters (Encapsulamiento)
     public int getId() { return id; }
     public String getNombre() { return nombre; }
     public String getIdentificacion() { return identificacion; }
@@ -28,13 +32,26 @@ public abstract class Usuario {
     public int getPuntosReputacion() { return puntosReputacion; }
     public String getClasificacion() { return clasificacion; }
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public void setNombre(String nombre) {
+        validarTexto(nombre, "El nombre es obligatorio");
+        this.nombre = nombre;
+    }
 
-    // Método para actualizar reputación (usado por polimorfismo y herencia)
-    public void actualizarReputacion(int puntos) {
-        this.puntosReputacion += puntos;
+    public void setTelefono(String telefono) {
+        validarTexto(telefono, "El telefono es obligatorio");
+        this.telefono = telefono;
+    }
+
+    public void setCorreo(String correo) {
+        validarTexto(correo, "El correo es obligatorio");
+        this.correo = correo;
+    }
+
+    public void sumarReputacion(int puntos) {
+        if (puntos <= 0) {
+            throw new IllegalArgumentException("Los puntos deben ser mayores a 0");
+        }
+        puntosReputacion += puntos;
         actualizarClasificacion();
     }
 
@@ -50,10 +67,18 @@ public abstract class Usuario {
         }
     }
 
+    protected void validarTexto(String texto, String mensaje) {
+        if (texto == null || texto.trim().isEmpty()) {
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
+
     public abstract String getTipoUsuario();
+
+    public abstract int calcularBeneficio();
 
     @Override
     public String toString() {
-        return nombre + " (" + getTipoUsuario() + ") - " + clasificacion + " [" + puntosReputacion + " pts]";
+        return nombre + " - " + getTipoUsuario() + " - " + clasificacion + " (" + puntosReputacion + " pts)";
     }
 }

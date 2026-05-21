@@ -11,6 +11,11 @@ public class Oferta {
     private EstadoOferta estado;
 
     public Oferta(int codigoOferta, Comprador comprador, Inmueble inmueble, double valorOferta) {
+        if (comprador == null) throw new IllegalArgumentException("El comprador es obligatorio");
+        if (inmueble == null) throw new IllegalArgumentException("El inmueble es obligatorio");
+        if (valorOferta <= 0) throw new IllegalArgumentException("El valor de la oferta debe ser mayor a 0");
+        if (!inmueble.estaDisponible()) throw new IllegalArgumentException("El inmueble no esta disponible");
+
         this.codigoOferta = codigoOferta;
         this.comprador = comprador;
         this.inmueble = inmueble;
@@ -23,20 +28,21 @@ public class Oferta {
     public Comprador getComprador() { return comprador; }
     public Inmueble getInmueble() { return inmueble; }
     public double getValorOferta() { return valorOferta; }
+    public LocalDate getFechaOferta() { return fechaOferta; }
     public EstadoOferta getEstado() { return estado; }
 
     public void aceptar() {
-        this.estado = EstadoOferta.ACEPTADA;
+        if (estado != EstadoOferta.PENDIENTE) throw new IllegalStateException("La oferta ya fue procesada");
+        estado = EstadoOferta.ACEPTADA;
     }
 
     public void rechazar() {
-        this.estado = EstadoOferta.RECHAZADA;
+        if (estado != EstadoOferta.PENDIENTE) throw new IllegalStateException("La oferta ya fue procesada");
+        estado = EstadoOferta.RECHAZADA;
     }
 
     @Override
     public String toString() {
-        return "Oferta #" + codigoOferta + " | Comprador: " + comprador.getNombre() +
-               " | Inmueble: " + inmueble.getCodigo() + " | Valor: $" + valorOferta +
-               " | Estado: " + estado + " | Fecha: " + fechaOferta;
+        return "Oferta " + codigoOferta + " - " + comprador.getNombre() + " - $" + valorOferta + " - " + estado;
     }
 }

@@ -11,7 +11,8 @@ public class Vendedor extends Usuario {
         return "Vendedor";
     }
 
-    public void publicarInmueble() {
-        System.out.println("El vendedor " + getNombre() + " está publicando un inmueble...");
+    @Override
+    public int calcularBeneficio() {
+        return getPuntosReputacion() / 5;
     }
 }

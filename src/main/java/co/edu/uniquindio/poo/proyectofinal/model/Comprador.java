@@ -11,8 +11,8 @@ public class Comprador extends Usuario {
         return "Comprador";
     }
 
-    // Ejemplo de polimorfismo (puede tener comportamiento diferente en el futuro)
-    public void realizarOferta() {
-        System.out.println("El comprador " + getNombre() + " está realizando una oferta...");
+    @Override
+    public int calcularBeneficio() {
+        return getPuntosReputacion() / 10;
     }
 }

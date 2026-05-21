@@ -10,7 +10,15 @@ public class Inmueble {
     private EstadoInmueble estado;
     private Vendedor vendedor;
 
-    public Inmueble(int codigo, TipoInmueble tipo, String direccion, String ciudad, double area, double precio, Vendedor vendedor) {
+    public Inmueble(int codigo, TipoInmueble tipo, String direccion, String ciudad,
+                    double area, double precio, Vendedor vendedor) {
+        if (tipo == null) throw new IllegalArgumentException("El tipo de inmueble es obligatorio");
+        if (direccion == null || direccion.trim().isEmpty()) throw new IllegalArgumentException("La direccion es obligatoria");
+        if (ciudad == null || ciudad.trim().isEmpty()) throw new IllegalArgumentException("La ciudad es obligatoria");
+        if (area <= 0) throw new IllegalArgumentException("El area debe ser mayor a 0");
+        if (precio <= 0) throw new IllegalArgumentException("El precio debe ser mayor a 0");
+        if (vendedor == null) throw new IllegalArgumentException("El vendedor es obligatorio");
+
         this.codigo = codigo;
         this.tipo = tipo;
         this.direccion = direccion;
@@ -30,17 +38,22 @@ public class Inmueble {
     public EstadoInmueble getEstado() { return estado; }
     public Vendedor getVendedor() { return vendedor; }
 
-    public void setPrecio(double precio) { this.precio = precio; }
-    public void setEstado(EstadoInmueble estado) { this.estado = estado; }
+    public void setPrecio(double precio) {
+        if (precio <= 0) throw new IllegalArgumentException("El precio debe ser mayor a 0");
+        this.precio = precio;
+    }
 
-    public void cambiarEstado(EstadoInmueble nuevoEstado) {
-        this.estado = nuevoEstado;
+    public void cambiarEstado(EstadoInmueble estado) {
+        if (estado == null) throw new IllegalArgumentException("El estado es obligatorio");
+        this.estado = estado;
+    }
+
+    public boolean estaDisponible() {
+        return estado == EstadoInmueble.DISPONIBLE;
     }
 
     @Override
     public String toString() {
-        return "[" + codigo + "] " + tipo + " en " + ciudad + " - " + direccion +
-               " | Área: " + area + "m² | Precio: $" + precio + " | Estado: " + estado +
-               " | Vendedor: " + vendedor.getNombre();
+        return codigo + " - " + tipo + " en " + ciudad + " - $" + precio + " - " + estado;
     }
 }
