@@ -16,4 +16,14 @@ public interface IOperacionesInmobiliarias {
     ArrayList<Inmueble> recomendarInmuebles(Comprador comprador);
 
     String generarReporteGeneral();
+
+    ArrayList<Inmueble> obtenerInmueblesVendidos();
+
+    ArrayList<Inmueble> obtenerInmueblesArrendados();
+
+    Comprador obtenerCompradorMasActivo();
+
+    Vendedor obtenerVendedorConMasPropiedades();
+
+    String obtenerCiudadConMayorDemanda();
 }

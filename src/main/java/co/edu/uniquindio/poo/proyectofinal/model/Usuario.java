@@ -1,9 +1,8 @@
 package co.edu.uniquindio.poo.proyectofinal.model;
 
 public abstract class Usuario {
-
     //Atributos
-
+    private int id;
     protected String nombre;
     protected String identificacion;
     protected String telefono;
@@ -12,60 +11,67 @@ public abstract class Usuario {
     protected String clasificacion;
 
     //Constructor
-    public Usuario(String nombre, String identificacion, String telefono, String correo, int puntosReputacion, String clasificacion) {
+    public Usuario(int id, String nombre, String identificacion, String telefono, String correo) {
         validarTexto(nombre, "El nombre es obligatorio");
         validarTexto(identificacion, "La identificacion es obligatoria");
         validarTexto(telefono, "El telefono es obligatorio");
         validarTexto(correo, "El correo es obligatorio");
 
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id debe ser mayor a 0");
+        }
 
+        this.id = id;
         this.nombre = nombre;
         this.identificacion = identificacion;
         this.telefono = telefono;
         this.correo = correo;
         this.puntosReputacion = 0;
-        this.clasificacion = clasificacion;
+        actualizarClasificacion();
     }
 
-    //Metodossssss
+    public int getId() {
+        return id;
+    }
 
-    //Get and Set
     public String getNombre() {
-        return nombre; }
+        return nombre;
+    }
     public void setNombre(String nombre) {
         validarTexto(nombre, "El nombre es obligatorio");
         this.nombre = nombre;
     }
 
     public String getIdentificacion() {
-        return identificacion; }
+        return identificacion;
+    }
 
     public String getTelefono() {
-        return telefono; }
+        return telefono;
+    }
     public void setTelefono(String telefono) {
         validarTexto(telefono, "El telefono es obligatorio");
         this.telefono = telefono;
     }
 
     public String getCorreo() {
-        return correo; }
+        return correo;
+    }
     public void setCorreo(String correo) {
         validarTexto(correo, "El correo es obligatorio");
         this.correo = correo;
     }
 
     public int getPuntosReputacion() {
-        return puntosReputacion; }
+        return puntosReputacion;
+    }
 
     public String getClasificacion() {
-        return clasificacion; }
-    public void setClasificacion(String clasificacion){
-        this.clasificacion = clasificacion;
+        return clasificacion;
     }
 
     public abstract String getTipoUsuario();
 
-    // Metodo abstracto
     public abstract int calcularBeneficio();
 
     public void sumarReputacion(int puntos) {
@@ -94,9 +100,8 @@ public abstract class Usuario {
         }
     }
 
-    //ToString
     @Override
     public String toString() {
-        return nombre + " - " + getTipoUsuario() + " - " + clasificacion + " (" + puntosReputacion + " pts)";
+        return id + " - " + nombre + " - " + getTipoUsuario() + " - " + clasificacion + " (" + puntosReputacion + " pts)";
     }
 }

@@ -17,22 +17,13 @@ public class UsuarioController {
     }
 
     public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo) {
-        return inmobiliaria.registrarComprador(nombre, identificacion, telefono, correo, 0, "Principiante");
-    }
-
-    public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo,
-                                        int puntosReputacion, String clasificacion) {
-        return inmobiliaria.registrarComprador(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
+        return inmobiliaria.registrarComprador(nombre, identificacion, telefono, correo);
     }
 
     public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo) {
-        return inmobiliaria.registrarVendedor(nombre, identificacion, telefono, correo, 0, "Principiante");
+        return inmobiliaria.registrarVendedor(nombre, identificacion, telefono, correo);
     }
 
-    public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo,
-                                      int puntosReputacion, String clasificacion) {
-        return inmobiliaria.registrarVendedor(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
-    }
 
     public ArrayList<Comprador> listarCompradores() {
         return inmobiliaria.getListaCompradores();

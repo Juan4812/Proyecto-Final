@@ -16,7 +16,7 @@ public class Transaccion {
     private TipoOperacion tipoOperacion;
 
     //Contructor
-    public Transaccion(int codigoTransaccion, double valorFinal, LocalDate fecha, Comprador comprador, Vendedor vendedor,
+    public Transaccion(int codigoTransaccion, double valorFinal, Comprador comprador, Vendedor vendedor,
                        Inmueble inmueble, TipoOperacion tipoOperacion) {
         if (comprador == null) throw new IllegalArgumentException("El comprador es obligatorio");
         if (vendedor == null) throw new IllegalArgumentException("El vendedor es obligatorio");

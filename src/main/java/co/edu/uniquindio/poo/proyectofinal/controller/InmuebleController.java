@@ -1,6 +1,6 @@
 package co.edu.uniquindio.poo.proyectofinal.controller;
 
-import co.edu.uniquindio.poo.proyectofinal.model.EstadoInmueble;
+
 import co.edu.uniquindio.poo.proyectofinal.model.Inmobiliaria;
 import co.edu.uniquindio.poo.proyectofinal.model.Inmueble;
 import co.edu.uniquindio.poo.proyectofinal.model.TipoInmueble;
@@ -18,8 +18,8 @@ public class InmuebleController {
     }
 
     public Inmueble registrarInmueble(int codigo, String direccion, String ciudad, double area, double precio,
-                                      TipoInmueble tipo, EstadoInmueble estado, Vendedor vendedor) {
-        return inmobiliaria.registrarInmueble(codigo, direccion, ciudad, area, precio, tipo, estado, vendedor);
+                                      TipoInmueble tipo, Vendedor vendedor) {
+        return inmobiliaria.registrarInmueble(codigo, direccion, ciudad, area, precio, tipo, vendedor);
     }
 
     public ArrayList<Inmueble> listarInmuebles() {

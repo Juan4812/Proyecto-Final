@@ -1,9 +1,6 @@
 package co.edu.uniquindio.poo.proyectofinal.controller;
 
-import co.edu.uniquindio.poo.proyectofinal.model.FiltroBusqueda;
-import co.edu.uniquindio.poo.proyectofinal.model.Inmobiliaria;
-import co.edu.uniquindio.poo.proyectofinal.model.Inmueble;
-import co.edu.uniquindio.poo.proyectofinal.model.TipoInmueble;
+import co.edu.uniquindio.poo.proyectofinal.model.*;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,9 +13,8 @@ public class BusquedaController {
         this.inmobiliaria = Objects.requireNonNull(inmobiliaria, "La inmobiliaria es obligatoria");
     }
 
-    public ArrayList<Inmueble> buscarInmuebles(String ciudad, TipoInmueble tipoInmueble, double precioMinimo,
-                                               double precioMaximo, double areaMinima) {
-        FiltroBusqueda filtro = new FiltroBusqueda(ciudad, tipoInmueble, precioMinimo, precioMaximo, areaMinima);
+    public ArrayList<Inmueble> buscarInmuebles(String ciudad, TipoInmueble tipoInmueble, double precioMinimo, double precioMaximo, double areaMinima, TipoOperacion tipoOperacion) {
+        FiltroBusqueda filtro = new FiltroBusqueda(ciudad, tipoInmueble, precioMinimo, precioMaximo, areaMinima, tipoOperacion);
         return inmobiliaria.buscarInmuebles(filtro);
     }
 
