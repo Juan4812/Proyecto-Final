@@ -38,6 +38,10 @@ public class UsuarioController {
         return inmobiliaria.getListaCompradores();
     }
 
+    public ArrayList<Usuario> listarUsuarios() {
+        return inmobiliaria.getListaUsuarios();
+    }
+
     public ArrayList<Vendedor> listarVendedores() {
         return inmobiliaria.getListaVendedores();
     }

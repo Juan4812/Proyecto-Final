@@ -2,7 +2,7 @@ package co.edu.uniquindio.poo.proyectofinal.model;
 
 import java.util.ArrayList;
 
-public interface OperacionesInmobiliarias {
+public interface IOperacionesInmobiliarias {
     Publicacion publicarInmueble(Vendedor vendedor, Inmueble inmueble, String descripcion, TipoOperacion tipoOperacion);
 
     ArrayList<Inmueble> buscarInmuebles(FiltroBusqueda filtro);

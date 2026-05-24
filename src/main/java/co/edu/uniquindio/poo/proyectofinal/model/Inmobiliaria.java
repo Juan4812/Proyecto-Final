@@ -3,14 +3,13 @@ package co.edu.uniquindio.poo.proyectofinal.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Inmobiliaria implements OperacionesInmobiliarias {
+public class Inmobiliaria implements IOperacionesInmobiliarias {
 
     //Atributos
     private String nombre, nit;
 
     //relaciones
-    private ArrayList<Comprador> listaCompradores;
-    private ArrayList<Vendedor> listaVendedores;
+    private ArrayList<Usuario> listaUsuarios;
     private ArrayList<Inmueble> listaInmuebles;
     private ArrayList<Publicacion> listaPublicaciones;
     private ArrayList<Oferta> listaOfertas;
@@ -21,8 +20,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     public Inmobiliaria(String nombre, String nit) {
         this.nombre=nombre;
         this.nit=nit;
-        listaCompradores = new ArrayList<>();
-        listaVendedores = new ArrayList<>();
+        listaUsuarios = new ArrayList<>();
         listaInmuebles = new ArrayList<>();
         listaPublicaciones = new ArrayList<>();
         listaOfertas = new ArrayList<>();
@@ -45,8 +43,29 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     }
 
 
-    public ArrayList<Comprador> getListaCompradores() { return listaCompradores; }
-    public ArrayList<Vendedor> getListaVendedores() { return listaVendedores; }
+    public ArrayList<Usuario> getListaUsuarios() {
+        return listaUsuarios;
+    }
+
+    public ArrayList<Comprador> getListaCompradores() {
+        ArrayList<Comprador> compradores = new ArrayList<>();
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario instanceof Comprador comprador) {
+                compradores.add(comprador);
+            }
+        }
+        return compradores;
+    }
+
+    public ArrayList<Vendedor> getListaVendedores() {
+        ArrayList<Vendedor> vendedores = new ArrayList<>();
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario instanceof Vendedor vendedor) {
+                vendedores.add(vendedor);
+            }
+        }
+        return vendedores;
+    }
     public ArrayList<Inmueble> getListaInmuebles() { return listaInmuebles; }
     public ArrayList<Publicacion> getListaPublicaciones() { return listaPublicaciones; }
     public ArrayList<Oferta> getListaOfertas() { return listaOfertas; }
@@ -57,19 +76,19 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo, int puntosReputacion, String clasificacion) {
         validarUsuarioNoRegistrado(identificacion);
         Comprador comprador = new Comprador(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
-        listaCompradores.add(comprador);
+        listaUsuarios.add(comprador);
         return comprador;
     }
 
     public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo, int puntosReputacion, String clasificacion) {
         validarUsuarioNoRegistrado(identificacion);
         Vendedor vendedor = new Vendedor(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
-        listaVendedores.add(vendedor);
+        listaUsuarios.add(vendedor);
         return vendedor;
     }
 
     public Inmueble registrarInmueble(int codigo, String direccion, String ciudad, double area, double precio, TipoInmueble tipo, EstadoInmueble estado, Vendedor vendedor) {
-        if (!listaVendedores.contains(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
+        if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
         if (buscarInmueblePorCodigo(codigo) != null) throw new IllegalArgumentException("Ya existe un inmueble con ese codigo");
 
         Inmueble inmueble = new Inmueble(codigo, direccion, ciudad, area, precio, tipo, estado, vendedor);
@@ -79,7 +98,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
 
     @Override
     public Publicacion publicarInmueble(Vendedor vendedor, Inmueble inmueble, String descripcion, TipoOperacion tipoOperacion) {
-        if (!listaVendedores.contains(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
+        if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
         if (!listaInmuebles.contains(inmueble)) throw new IllegalArgumentException("El inmueble no esta registrado");
         if (inmueble.getVendedor() != vendedor) throw new IllegalArgumentException("El inmueble no pertenece al vendedor");
         if (!inmueble.estaDisponible()) throw new IllegalArgumentException("El inmueble no esta disponible");
@@ -111,7 +130,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
 
     @Override
     public Oferta realizarOferta(Comprador comprador, Inmueble inmueble, double valorOferta) {
-        if (!listaCompradores.contains(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
+        if (!esCompradorRegistrado(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
         if (!listaInmuebles.contains(inmueble)) throw new IllegalArgumentException("El inmueble no esta registrado");
 
         Oferta oferta = new Oferta(generarCodigoOferta(), comprador, inmueble, valorOferta);
@@ -166,7 +185,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
 
     @Override
     public ArrayList<Inmueble> recomendarInmuebles(Comprador comprador) {
-        if (!listaCompradores.contains(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
+        if (!esCompradorRegistrado(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
 
         ArrayList<Inmueble> listaInmueblesRecomendados = new ArrayList<>();
 
@@ -193,8 +212,8 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     @Override
     public String generarReporteGeneral() {
         String reporte = "";
-        reporte += "Total compradores: " + listaCompradores.size() + "\n";
-        reporte += "Total vendedores: " + listaVendedores.size() + "\n";
+        reporte += "Total compradores: " + getListaCompradores().size() + "\n";
+        reporte += "Total vendedores: " + getListaVendedores().size() + "\n";
         reporte += "Total inmuebles: " + listaInmuebles.size() + "\n";
         reporte += "Total publicaciones: " + listaPublicaciones.size() + "\n";
         reporte += "Total ofertas: " + listaOfertas.size() + "\n";
@@ -212,17 +231,19 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     }
 
     private void validarUsuarioNoRegistrado(String identificacion) {
-        for (Comprador comprador : listaCompradores) {
-            if (comprador.getIdentificacion().equals(identificacion)) {
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario.getIdentificacion().equals(identificacion)) {
                 throw new IllegalArgumentException("El usuario ya esta registrado");
             }
         }
+    }
 
-        for (Vendedor vendedor : listaVendedores) {
-            if (vendedor.getIdentificacion().equals(identificacion)) {
-                throw new IllegalArgumentException("El usuario ya esta registrado");
-            }
-        }
+    private boolean esCompradorRegistrado(Comprador comprador) {
+        return comprador != null && listaUsuarios.contains(comprador);
+    }
+
+    private boolean esVendedorRegistrado(Vendedor vendedor) {
+        return vendedor != null && listaUsuarios.contains(vendedor);
     }
 
     private Inmueble buscarInmueblePorCodigo(int codigo) {
@@ -259,7 +280,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     private String obtenerCompradorMasActivo() {
         Comprador compradorMasActivo = null;
 
-        for (Comprador comprador : listaCompradores) {
+        for (Comprador comprador : getListaCompradores()) {
             if (compradorMasActivo == null || comprador.getPuntosReputacion() > compradorMasActivo.getPuntosReputacion()) {
                 compradorMasActivo = comprador;
             }
@@ -272,7 +293,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
         Vendedor vendedorConMasPropiedades = null;
         int mayorCantidad = 0;
 
-        for (Vendedor vendedor : listaVendedores) {
+        for (Vendedor vendedor : getListaVendedores()) {
             int cantidad = 0;
 
             for (Inmueble inmueble : listaInmuebles) {

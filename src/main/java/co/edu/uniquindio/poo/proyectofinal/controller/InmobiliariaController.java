@@ -7,6 +7,7 @@ import co.edu.uniquindio.poo.proyectofinal.model.Inmueble;
 import co.edu.uniquindio.poo.proyectofinal.model.Oferta;
 import co.edu.uniquindio.poo.proyectofinal.model.Publicacion;
 import co.edu.uniquindio.poo.proyectofinal.model.Transaccion;
+import co.edu.uniquindio.poo.proyectofinal.model.Usuario;
 import co.edu.uniquindio.poo.proyectofinal.model.Vendedor;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class InmobiliariaController {
 
     public ArrayList<Comprador> obtenerCompradores() {
         return inmobiliaria.getListaCompradores();
+    }
+
+    public ArrayList<Usuario> obtenerUsuarios() {
+        return inmobiliaria.getListaUsuarios();
     }
 
     public ArrayList<Vendedor> obtenerVendedores() {
