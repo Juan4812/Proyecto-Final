@@ -2,8 +2,9 @@ package co.edu.uniquindio.poo.proyectofinal.model;
 
 public class Comprador extends Usuario {
 
-    public Comprador(int id, String nombre, String identificacion, String telefono, String correo) {
-        super(id, nombre, identificacion, telefono, correo);
+    //Constructor
+    public Comprador(String nombre, String identificacion, String telefono, String correo,int puntosReputacion, String clasificacion) {
+        super(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
     }
 
     @Override

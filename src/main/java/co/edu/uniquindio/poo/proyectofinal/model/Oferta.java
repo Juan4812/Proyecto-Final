@@ -3,6 +3,8 @@ package co.edu.uniquindio.poo.proyectofinal.model;
 import java.time.LocalDate;
 
 public class Oferta {
+
+    //Atributos
     private int codigoOferta;
     private Comprador comprador;
     private Inmueble inmueble;
@@ -10,6 +12,7 @@ public class Oferta {
     private LocalDate fechaOferta;
     private EstadoOferta estado;
 
+    //Constructor
     public Oferta(int codigoOferta, Comprador comprador, Inmueble inmueble, double valorOferta) {
         if (comprador == null) throw new IllegalArgumentException("El comprador es obligatorio");
         if (inmueble == null) throw new IllegalArgumentException("El inmueble es obligatorio");
@@ -24,6 +27,9 @@ public class Oferta {
         this.estado = EstadoOferta.PENDIENTE;
     }
 
+    //Metodossssss
+
+    //Get and Set
     public int getCodigoOferta() { return codigoOferta; }
     public Comprador getComprador() { return comprador; }
     public Inmueble getInmueble() { return inmueble; }
@@ -31,6 +37,7 @@ public class Oferta {
     public LocalDate getFechaOferta() { return fechaOferta; }
     public EstadoOferta getEstado() { return estado; }
 
+    //
     public void aceptar() {
         if (estado != EstadoOferta.PENDIENTE) throw new IllegalStateException("La oferta ya fue procesada");
         estado = EstadoOferta.ACEPTADA;
@@ -41,6 +48,7 @@ public class Oferta {
         estado = EstadoOferta.RECHAZADA;
     }
 
+    //ToString
     @Override
     public String toString() {
         return "Oferta " + codigoOferta + " - " + comprador.getNombre() + " - $" + valorOferta + " - " + estado;

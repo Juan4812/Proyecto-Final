@@ -1,8 +1,14 @@
 package co.edu.uniquindio.poo.proyectofinal.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Inmobiliaria implements OperacionesInmobiliarias {
+
+    //Atributos
+    private String nombre, nit;
+
+    //relaciones
     private ArrayList<Comprador> listaCompradores;
     private ArrayList<Vendedor> listaVendedores;
     private ArrayList<Inmueble> listaInmuebles;
@@ -11,7 +17,10 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     private ArrayList<Transaccion> listaTransacciones;
     private ArrayList<Alerta> listaAlertas;
 
-    public Inmobiliaria() {
+    //Constructor
+    public Inmobiliaria(String nombre, String nit) {
+        this.nombre=nombre;
+        this.nit=nit;
         listaCompradores = new ArrayList<>();
         listaVendedores = new ArrayList<>();
         listaInmuebles = new ArrayList<>();
@@ -21,6 +30,21 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
         listaAlertas = new ArrayList<>();
     }
 
+    //Metodossssss
+
+    //Get and Set
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNit() {
+        return nit;
+    }
+
+
     public ArrayList<Comprador> getListaCompradores() { return listaCompradores; }
     public ArrayList<Vendedor> getListaVendedores() { return listaVendedores; }
     public ArrayList<Inmueble> getListaInmuebles() { return listaInmuebles; }
@@ -29,26 +53,26 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
     public ArrayList<Transaccion> getListaTransacciones() { return listaTransacciones; }
     public ArrayList<Alerta> getListaAlertas() { return listaAlertas; }
 
-    public Comprador registrarComprador(int id, String nombre, String identificacion, String telefono, String correo) {
-        validarUsuarioNoRegistrado(id, identificacion);
-        Comprador comprador = new Comprador(id, nombre, identificacion, telefono, correo);
+    //
+    public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo, int puntosReputacion, String clasificacion) {
+        validarUsuarioNoRegistrado(identificacion);
+        Comprador comprador = new Comprador(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
         listaCompradores.add(comprador);
         return comprador;
     }
 
-    public Vendedor registrarVendedor(int id, String nombre, String identificacion, String telefono, String correo) {
-        validarUsuarioNoRegistrado(id, identificacion);
-        Vendedor vendedor = new Vendedor(id, nombre, identificacion, telefono, correo);
+    public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo, int puntosReputacion, String clasificacion) {
+        validarUsuarioNoRegistrado(identificacion);
+        Vendedor vendedor = new Vendedor(nombre, identificacion, telefono, correo, puntosReputacion, clasificacion);
         listaVendedores.add(vendedor);
         return vendedor;
     }
 
-    public Inmueble registrarInmueble(int codigo, TipoInmueble tipo, String direccion, String ciudad,
-                                      double area, double precio, Vendedor vendedor) {
+    public Inmueble registrarInmueble(int codigo, String direccion, String ciudad, double area, double precio, TipoInmueble tipo, EstadoInmueble estado, Vendedor vendedor) {
         if (!listaVendedores.contains(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
         if (buscarInmueblePorCodigo(codigo) != null) throw new IllegalArgumentException("Ya existe un inmueble con ese codigo");
 
-        Inmueble inmueble = new Inmueble(codigo, tipo, direccion, ciudad, area, precio, vendedor);
+        Inmueble inmueble = new Inmueble(codigo, direccion, ciudad, area, precio, tipo, estado, vendedor);
         listaInmuebles.add(inmueble);
         return inmueble;
     }
@@ -60,7 +84,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
         if (inmueble.getVendedor() != vendedor) throw new IllegalArgumentException("El inmueble no pertenece al vendedor");
         if (!inmueble.estaDisponible()) throw new IllegalArgumentException("El inmueble no esta disponible");
 
-        Publicacion publicacion = new Publicacion(generarCodigoPublicacion(), descripcion, inmueble, tipoOperacion);
+        Publicacion publicacion = new Publicacion(generarCodigoPublicacion(), fechaPublicacion, descripcion, inmueble, tipoOperacion);
         listaPublicaciones.add(publicacion);
         vendedor.sumarReputacion(10);
         return publicacion;
@@ -114,10 +138,11 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
 
         Transaccion transaccion = new Transaccion(
                 generarCodigoTransaccion(),
+                oferta.getValorOferta(),
+                oferta.getFechaOferta(),
                 oferta.getComprador(),
                 inmueble.getVendedor(),
                 inmueble,
-                oferta.getValorOferta(),
                 tipoOperacion
         );
 
@@ -186,15 +211,15 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
         crearAlerta(inmueble.getVendedor(), "El precio del inmueble " + inmueble.getCodigo() + " fue actualizado", TipoAlerta.CORREO);
     }
 
-    private void validarUsuarioNoRegistrado(int id, String identificacion) {
+    private void validarUsuarioNoRegistrado(String identificacion) {
         for (Comprador comprador : listaCompradores) {
-            if (comprador.getId() == id || comprador.getIdentificacion().equals(identificacion)) {
+            if (comprador.getIdentificacion().equals(identificacion)) {
                 throw new IllegalArgumentException("El usuario ya esta registrado");
             }
         }
 
         for (Vendedor vendedor : listaVendedores) {
-            if (vendedor.getId() == id || vendedor.getIdentificacion().equals(identificacion)) {
+            if (vendedor.getIdentificacion().equals(identificacion)) {
                 throw new IllegalArgumentException("El usuario ya esta registrado");
             }
         }
