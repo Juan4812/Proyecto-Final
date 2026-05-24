@@ -84,7 +84,7 @@ public class Inmobiliaria implements OperacionesInmobiliarias {
         if (inmueble.getVendedor() != vendedor) throw new IllegalArgumentException("El inmueble no pertenece al vendedor");
         if (!inmueble.estaDisponible()) throw new IllegalArgumentException("El inmueble no esta disponible");
 
-        Publicacion publicacion = new Publicacion(generarCodigoPublicacion(), fechaPublicacion, descripcion, inmueble, tipoOperacion);
+        Publicacion publicacion = new Publicacion(generarCodigoPublicacion(), LocalDate.now(), descripcion, inmueble, tipoOperacion);
         listaPublicaciones.add(publicacion);
         vendedor.sumarReputacion(10);
         return publicacion;
