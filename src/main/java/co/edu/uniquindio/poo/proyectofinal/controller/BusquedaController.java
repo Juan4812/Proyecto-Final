@@ -2,6 +2,7 @@ package co.edu.uniquindio.poo.proyectofinal.controller;
 
 import co.edu.uniquindio.poo.proyectofinal.model.*;
 
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -16,6 +17,13 @@ public class BusquedaController {
     public ArrayList<Inmueble> buscarInmuebles(String ciudad, TipoInmueble tipoInmueble, double precioMinimo, double precioMaximo, double areaMinima, TipoOperacion tipoOperacion) {
         FiltroBusqueda filtro = new FiltroBusqueda(ciudad, tipoInmueble, precioMinimo, precioMaximo, areaMinima, tipoOperacion);
         return inmobiliaria.buscarInmuebles(filtro);
+    }
+
+    public ArrayList<Inmueble> buscarInmuebles(Comprador comprador, String ciudad, TipoInmueble tipoInmueble,
+                                               double precioMinimo, double precioMaximo, double areaMinima,
+                                               TipoOperacion tipoOperacion) {
+        FiltroBusqueda filtro = new FiltroBusqueda(ciudad, tipoInmueble, precioMinimo, precioMaximo, areaMinima, tipoOperacion);
+        return inmobiliaria.buscarInmuebles(comprador, filtro);
     }
 
     public ArrayList<Inmueble> buscarInmuebles(FiltroBusqueda filtro) {

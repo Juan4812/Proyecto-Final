@@ -55,37 +55,58 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
 
 
     public ArrayList<Usuario> getListaUsuarios() {
-        return listaUsuarios;
+        return new ArrayList<>(listaUsuarios);
     }
 
     public ArrayList<Comprador> getListaCompradores() {
-        ArrayList<Comprador> compradores = new ArrayList<>();
+        ArrayList<Comprador> listaCompradores = new ArrayList<>();
+
         for (Usuario usuario : listaUsuarios) {
             if (usuario instanceof Comprador comprador) {
-                compradores.add(comprador);
+                listaCompradores.add(comprador);
             }
         }
-        return compradores;
+
+        return listaCompradores;
     }
 
     public ArrayList<Vendedor> getListaVendedores() {
-        ArrayList<Vendedor> vendedores = new ArrayList<>();
+        ArrayList<Vendedor> listaVendedores = new ArrayList<>();
+
         for (Usuario usuario : listaUsuarios) {
             if (usuario instanceof Vendedor vendedor) {
-                vendedores.add(vendedor);
+                listaVendedores.add(vendedor);
             }
         }
-        return vendedores;
-    }
-    public ArrayList<Inmueble> getListaInmuebles() { return listaInmuebles; }
-    public ArrayList<Publicacion> getListaPublicaciones() { return listaPublicaciones; }
-    public ArrayList<Oferta> getListaOfertas() { return listaOfertas; }
-    public ArrayList<Transaccion> getListaTransacciones() { return listaTransacciones; }
-    public ArrayList<Alerta> getListaAlertas() { return listaAlertas; }
-    public ArrayList<HistorialBusqueda> getListaHistorialBusquedas() {
-        return listaHistorialBusquedas;
+
+        return listaVendedores;
     }
 
+    public ArrayList<Inmueble> getListaInmuebles() {
+        return new ArrayList<>(listaInmuebles);
+    }
+
+    public ArrayList<Publicacion> getListaPublicaciones() {
+        return new ArrayList<>(listaPublicaciones);
+    }
+
+    public ArrayList<Oferta> getListaOfertas() {
+        return new ArrayList<>(listaOfertas);
+    }
+
+    public ArrayList<Transaccion> getListaTransacciones() {
+        return new ArrayList<>(listaTransacciones);
+    }
+
+    public ArrayList<Alerta> getListaAlertas() {
+        return new ArrayList<>(listaAlertas);
+    }
+
+    public ArrayList<HistorialBusqueda> getListaHistorialBusquedas() {
+        return new ArrayList<>(listaHistorialBusquedas);
+    }
+
+    //Metodo para registrar un comprador
     public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo) {
         validarUsuarioNoRegistrado(identificacion);
         Comprador comprador = new Comprador(generarIdUsuario(), nombre, identificacion, telefono, correo);
@@ -93,6 +114,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return comprador;
     }
 
+    //Metodo para registrar un vendedor
     public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo) {
         validarUsuarioNoRegistrado(identificacion);
         Vendedor vendedor = new Vendedor(generarIdUsuario(), nombre, identificacion, telefono, correo);
@@ -100,7 +122,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return vendedor;
     }
 
-
+    //Metodo para registrar un inmueble
     public Inmueble registrarInmueble(int codigo, String direccion, String ciudad, double area,
                                       double precio, TipoInmueble tipo, Vendedor vendedor) {
         if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
@@ -111,6 +133,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return inmueble;
     }
 
+    //Metodo para publicar un inmueble
     @Override
     public Publicacion publicarInmueble(Vendedor vendedor, Inmueble inmueble, String descripcion, TipoOperacion tipoOperacion) {
         if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
@@ -127,6 +150,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return publicacion;
     }
 
+    //Metodo para buscar un inmueble
     @Override
     public ArrayList<Inmueble> buscarInmuebles(FiltroBusqueda filtro) {
         if (filtro == null) throw new IllegalArgumentException("El filtro de busqueda es obligatorio");
@@ -148,6 +172,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         listaHistorialBusquedas.add(new HistorialBusqueda(comprador, filtro, LocalDate.now()));
         return buscarInmuebles(filtro);
     }
+
 
     private void notificarCompradoresPorInmuebleSimilar(Publicacion publicacionNueva) {
         ArrayList<Comprador> listaCompradoresNotificados = new ArrayList<>();
@@ -272,12 +297,32 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada", TipoAlerta.CORREO);
     }
 
+
     @Override
     public ArrayList<Inmueble> recomendarInmuebles(Comprador comprador) {
         if (!esCompradorRegistrado(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
 
         ArrayList<Inmueble> listaInmueblesRecomendados = new ArrayList<>();
 
+        agregarRecomendacionesPorHistorialBusqueda(comprador, listaInmueblesRecomendados);
+        agregarRecomendacionesPorOfertas(comprador, listaInmueblesRecomendados);
+
+        return listaInmueblesRecomendados;
+    }
+    private void agregarRecomendacionesPorHistorialBusqueda(Comprador comprador, ArrayList<Inmueble> listaInmueblesRecomendados) {
+        for (HistorialBusqueda historialBusqueda : listaHistorialBusquedas) {
+            if (historialBusqueda.comprador() == comprador) {
+                for (Inmueble inmueble : listaInmuebles) {
+                    if (cumpleFiltroBusqueda(inmueble, historialBusqueda.filtroBusqueda())
+                            && !listaInmueblesRecomendados.contains(inmueble)) {
+                        listaInmueblesRecomendados.add(inmueble);
+                    }
+                }
+            }
+        }
+    }
+
+    private void agregarRecomendacionesPorOfertas(Comprador comprador, ArrayList<Inmueble> listaInmueblesRecomendados) {
         for (Oferta oferta : listaOfertas) {
             if (oferta.getComprador() == comprador) {
                 Inmueble inmuebleReferencia = oferta.getInmueble();
@@ -294,8 +339,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
                 }
             }
         }
-
-        return listaInmueblesRecomendados;
     }
 
     @Override
@@ -307,8 +350,8 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         reporte += "Total publicaciones: " + listaPublicaciones.size() + "\n";
         reporte += "Total ofertas: " + listaOfertas.size() + "\n";
         reporte += "Total transacciones: " + listaTransacciones.size() + "\n";
-        reporte += "Comprador mas activo: " + obtenerCompradorMasActivo() + "\n";
-        reporte += "Vendedor con mas propiedades: " + obtenerVendedorConMasPropiedades() + "\n";
+        reporte += "Comprador mas activo: " + obtenerNombreCompradorMasActivo() + "\n";
+        reporte += "Vendedor con mas propiedades: " + obtenerNombreVendedorConMasPropiedades() + "\n";
         reporte += "Ciudad con mayor demanda: " + obtenerCiudadConMayorDemanda() + "\n";
         return reporte;
     }
