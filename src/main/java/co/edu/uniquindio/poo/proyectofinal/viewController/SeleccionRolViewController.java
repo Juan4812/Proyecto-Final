@@ -35,6 +35,7 @@ public class SeleccionRolViewController {
                 );
             }
 
+            limpiarFormulario();
             abrirMainComprador(comprador);
         } catch (Exception e) {
             mostrarError(e);
@@ -55,6 +56,7 @@ public class SeleccionRolViewController {
                 );
             }
 
+            limpiarFormulario();
             abrirMainVendedor(vendedor);
         } catch (Exception e) {
             mostrarError(e);
@@ -101,5 +103,13 @@ public class SeleccionRolViewController {
 
     private void mostrarError(Exception e) {
         lblMensaje.setText(e.getMessage());
+    }
+
+    private void limpiarFormulario() {
+        txtNombre.clear();
+        txtIdentificacion.clear();
+        txtTelefono.clear();
+        txtCorreo.clear();
+        lblMensaje.setText("");
     }
 }

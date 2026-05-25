@@ -210,6 +210,7 @@ public class VendedorViewController {
 
             ofertaController.rechazarOferta(oferta);
             cargarOfertasRecibidas();
+            cargarMisAlertas();
             lblMensaje.setText("Oferta rechazada");
         } catch (Exception e) {
             mostrarError(e);

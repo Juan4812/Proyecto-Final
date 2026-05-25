@@ -127,6 +127,9 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
                                       double precio, TipoInmueble tipo, Vendedor vendedor) {
         if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
         if (buscarInmueblePorCodigo(codigo) != null) throw new IllegalArgumentException("Ya existe un inmueble con ese codigo");
+        if (existeInmuebleConMismosDatos(direccion, ciudad, area, precio, tipo)) {
+            throw new IllegalArgumentException("Ya existe un inmueble con los mismos datos");
+        }
 
         Inmueble inmueble = new Inmueble(codigo, direccion, ciudad, area, precio, tipo, vendedor);
         listaInmuebles.add(inmueble);
@@ -140,6 +143,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         if (!listaInmuebles.contains(inmueble)) throw new IllegalArgumentException("El inmueble no esta registrado");
         if (inmueble.getVendedor() != vendedor) throw new IllegalArgumentException("El inmueble no pertenece al vendedor");
         if (!inmueble.estaDisponible()) throw new IllegalArgumentException("El inmueble no esta disponible");
+        if (buscarPublicacionPorInmueble(inmueble) != null) throw new IllegalArgumentException("El inmueble ya esta publicado");
 
         Publicacion publicacion = new Publicacion(generarCodigoPublicacion(), descripcion, inmueble, tipoOperacion);
         listaPublicaciones.add(publicacion);
@@ -279,6 +283,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
                 inmueble,
                 tipoOperacion
         );
+        inmueble.setPrecio(oferta.getValorOferta());
         listaTransacciones.add(transaccion);
         oferta.getComprador().sumarReputacion(PUNTOS_COMPRAR_INMUEBLE);
         oferta.getComprador().sumarReputacion(PUNTOS_COMPLETAR_TRANSACCION);
@@ -464,6 +469,26 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return vendedor != null && listaUsuarios.contains(vendedor);
     }
 
+    private boolean existeInmuebleConMismosDatos(String direccion, String ciudad, double area,
+                                                 double precio, TipoInmueble tipo) {
+        if (direccion == null || ciudad == null || tipo == null) {
+            return false;
+        }
+
+        for (Inmueble inmueble : listaInmuebles) {
+            boolean mismosDatos = inmueble.getDireccion().equalsIgnoreCase(direccion)
+                    && inmueble.getCiudad().equalsIgnoreCase(ciudad)
+                    && Double.compare(inmueble.getArea(), area) == 0
+                    && Double.compare(inmueble.getPrecio(), precio) == 0
+                    && inmueble.getTipo() == tipo;
+
+            if (mismosDatos) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private Inmueble buscarInmueblePorCodigo(int codigo) {
         for (Inmueble inmueble : listaInmuebles) {
             if (inmueble.getCodigo() == codigo) return inmueble;
@@ -475,6 +500,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         for (Oferta oferta : listaOfertas) {
             if (oferta.getInmueble() == inmueble && oferta != ofertaAceptada && oferta.getEstado() == EstadoOferta.PENDIENTE) {
                 oferta.rechazar();
+                crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada porque otra oferta fue aceptada", TipoAlerta.CORREO);
             }
         }
     }

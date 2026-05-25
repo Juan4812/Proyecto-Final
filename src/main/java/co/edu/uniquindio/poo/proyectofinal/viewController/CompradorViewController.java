@@ -61,6 +61,12 @@ public class CompradorViewController {
                 actualizarInmuebleSeleccionado();
             }
         });
+
+        tabPaneComprador.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+            if (newTab != null && "Alertas".equals(newTab.getText())) {
+                cargarMisAlertas();
+            }
+        });
     }
 
     public void setCompradorActual(Comprador compradorActual) {
@@ -172,6 +178,7 @@ public class CompradorViewController {
             txtValorOferta.clear();
             actualizarPerfil();
             cargarMisOfertas();
+            cargarMisAlertas();
             lblMensaje.setText("Oferta registrada");
         } catch (Exception e) {
             mostrarError(e);

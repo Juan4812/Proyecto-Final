@@ -106,6 +106,28 @@ class InmobiliariaTest {
     }
 
     @Test
+    void noPermiteRegistrarInmueblesConDatosExactamenteIguales() {
+        Inmobiliaria inmobiliaria = crearInmobiliaria();
+        Vendedor vendedor = inmobiliaria.registrarVendedor(
+                "Luis Gomez", "2001", "3002222222", "luis@mail.com");
+        inmobiliaria.registrarInmueble(
+                1, "Calle 10 # 20-30", "Armenia", 80, 250000000,
+                TipoInmueble.APARTAMENTO, vendedor);
+
+        IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class,
+                () -> inmobiliaria.registrarInmueble(
+                        2, "Calle 10 # 20-30", "Armenia", 80, 250000000,
+                        TipoInmueble.APARTAMENTO, vendedor),
+                "No se debe permitir registrar dos inmuebles con los mismos datos exactos.");
+
+        imprimirPrueba(
+                "validacion de inmuebles duplicados",
+                excepcion.getMessage(),
+                "Ya existe un inmueble con los mismos datos"
+        );
+    }
+
+    @Test
     void publicarInmuebleValidaExistenciaPertenenciaDisponibilidadYReputacion() {
         Inmobiliaria inmobiliaria = crearInmobiliaria();
         Vendedor vendedor = inmobiliaria.registrarVendedor(
@@ -139,6 +161,27 @@ class InmobiliariaTest {
                 "publicaciones=" + inmobiliaria.getListaPublicaciones().size()
                         + ", reputacionVendedor=" + vendedor.getPuntosReputacion(),
                 "publicaciones=1, reputacionVendedor=10"
+        );
+    }
+
+    @Test
+    void noPermitePublicarElMismoInmuebleDosVeces() {
+        Inmobiliaria inmobiliaria = crearInmobiliaria();
+        Vendedor vendedor = inmobiliaria.registrarVendedor(
+                "Luis Gomez", "2001", "3002222222", "luis@mail.com");
+        Inmueble inmueble = inmobiliaria.registrarInmueble(
+                1, "Calle 10 # 20-30", "Armenia", 80, 250000000,
+                TipoInmueble.APARTAMENTO, vendedor);
+        inmobiliaria.publicarInmueble(vendedor, inmueble, "Primera publicacion", TipoOperacion.VENTA);
+
+        IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class,
+                () -> inmobiliaria.publicarInmueble(vendedor, inmueble, "Segunda publicacion", TipoOperacion.VENTA),
+                "No se debe permitir publicar dos veces el mismo inmueble disponible.");
+
+        imprimirPrueba(
+                "validacion de publicacion duplicada",
+                excepcion.getMessage(),
+                "El inmueble ya esta publicado"
         );
     }
 
@@ -290,18 +333,24 @@ class InmobiliariaTest {
                 "Las otras ofertas pendientes del inmueble deben rechazarse.");
         assertEquals(EstadoInmueble.VENDIDO, inmueble.getEstado(),
                 "Si la operacion es venta, el inmueble debe quedar vendido.");
+        assertEquals(240000000, inmueble.getPrecio(),
+                "El inmueble debe mostrar el valor final de la oferta aceptada.");
         assertEquals(155, compradorAceptado.getPuntosReputacion(),
                 "Comprador aceptado debe tener 5 + 50 + 100 puntos.");
         assertEquals(100, vendedor.getPuntosReputacion(),
                 "Vendedor debe recibir 100 puntos por completar transaccion.");
+        assertTrue(inmobiliaria.getListaAlertas().stream()
+                        .anyMatch(alerta -> alerta.getUsuario() == compradorRechazado),
+                "El comprador rechazado automaticamente debe recibir una alerta.");
 
         imprimirPrueba(
                 "oferta aceptada y transaccion",
                 "transacciones=" + inmobiliaria.getListaTransacciones().size()
                         + ", estadoInmueble=" + inmueble.getEstado()
+                        + ", precioInmueble=" + String.format(Locale.US, "%.1f", inmueble.getPrecio())
                         + ", reputacionComprador=" + compradorAceptado.getPuntosReputacion()
                         + ", reputacionVendedor=" + vendedor.getPuntosReputacion(),
-                "transacciones=1, estadoInmueble=VENDIDO, reputacionComprador=155, reputacionVendedor=100"
+                "transacciones=1, estadoInmueble=VENDIDO, precioInmueble=240000000.0, reputacionComprador=155, reputacionVendedor=100"
         );
     }
 
@@ -321,14 +370,17 @@ class InmobiliariaTest {
 
         assertEquals(EstadoInmueble.ARRENDADO, inmueble.getEstado(),
                 "Si la operacion es arriendo, el inmueble debe quedar arrendado.");
+        assertEquals(1800000, inmueble.getPrecio(),
+                "El inmueble arrendado debe mostrar el valor pactado en la oferta.");
         assertEquals(1, inmobiliaria.obtenerInmueblesArrendados().size(),
                 "El reporte de arrendados debe incluir el inmueble.");
 
         imprimirPrueba(
                 "oferta de arriendo aceptada",
                 "estadoInmueble=" + inmueble.getEstado()
+                        + ", precioInmueble=" + String.format(Locale.US, "%.1f", inmueble.getPrecio())
                         + ", arrendados=" + inmobiliaria.obtenerInmueblesArrendados().size(),
-                "estadoInmueble=ARRENDADO, arrendados=1"
+                "estadoInmueble=ARRENDADO, precioInmueble=1800000.0, arrendados=1"
         );
     }
 
