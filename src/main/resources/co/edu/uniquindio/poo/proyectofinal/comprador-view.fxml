@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.CompradorViewController"
+            style="-fx-background-color: white;">
+
+    <top>
+        <VBox spacing="6" style="-fx-padding: 0 0 12 0;">
+            <Label text="Panel comprador" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+            <Label fx:id="lblPerfil" style="-fx-text-fill: #4b5563;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabPaneComprador" tabClosingPolicy="UNAVAILABLE">
+            <Tab text="Publicaciones">
+                <BorderPane style="-fx-padding: 14;">
+                    <top>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button text="Actualizar publicaciones" onAction="#cargarPublicaciones"/>
+                            <ComboBox fx:id="cbAccionPublicacion" promptText="Accion"/>
+                            <Button text="Ejecutar" onAction="#ejecutarAccionPublicacion" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                        </HBox>
+                    </top>
+                    <center>
+                        <ListView fx:id="listaPublicaciones" prefHeight="420"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Buscar">
+                <BorderPane style="-fx-padding: 14;">
+                    <top>
+                        <VBox spacing="10">
+                            <GridPane hgap="10" vgap="10">
+                                <TextField fx:id="txtCiudad" promptText="Ciudad" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="cbTipoInmueble" promptText="Tipo inmueble" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <ComboBox fx:id="cbTipoOperacion" promptText="Operacion" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                                <TextField fx:id="txtPrecioMinimo" promptText="Precio minimo" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPrecioMaximo" promptText="Precio maximo" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                <TextField fx:id="txtAreaMinima" promptText="Area minima" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                            </GridPane>
+
+                            <HBox spacing="10">
+                                <Button text="Buscar" onAction="#buscarInmuebles" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                                <Button text="Recomendaciones" onAction="#cargarRecomendaciones"/>
+                                <Button text="Limpiar" onAction="#limpiarFiltros"/>
+                                <ComboBox fx:id="cbAccionBusqueda" promptText="Accion"/>
+                                <Button text="Ejecutar" onAction="#ejecutarAccionBusqueda"/>
+                            </HBox>
+                        </VBox>
+                    </top>
+                    <center>
+                        <ListView fx:id="listaInmuebles" prefHeight="360"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Mis ofertas">
+                <BorderPane style="-fx-padding: 14;">
+                    <top>
+                        <VBox spacing="10">
+                            <Label fx:id="lblInmuebleSeleccionado" text="Ningun inmueble seleccionado" style="-fx-text-fill: #374151; -fx-font-weight: bold;"/>
+                            <HBox spacing="10">
+                                <TextField fx:id="txtValorOferta" promptText="Valor de la oferta"/>
+                                <Button text="Confirmar oferta" onAction="#hacerOferta" style="-fx-background-color: #059669; -fx-text-fill: white;"/>
+                                <Button text="Actualizar mis ofertas" onAction="#cargarMisOfertas"/>
+                            </HBox>
+                        </VBox>
+                    </top>
+                    <center>
+                        <ListView fx:id="listaOfertas" prefHeight="390"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Alertas">
+                <BorderPane style="-fx-padding: 14;">
+                    <top>
+                        <Button text="Actualizar alertas" onAction="#cargarMisAlertas"/>
+                    </top>
+                    <center>
+                        <ListView fx:id="listaAlertas" prefHeight="420"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Detalle">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <TextArea fx:id="txtDetalle" editable="false" wrapText="true"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+        </TabPane>
+    </center>
+
+    <bottom>
+        <Label fx:id="lblMensaje" wrapText="true" style="-fx-padding: 10 0 0 0; -fx-text-fill: #374151;"/>
+    </bottom>
+</BorderPane>

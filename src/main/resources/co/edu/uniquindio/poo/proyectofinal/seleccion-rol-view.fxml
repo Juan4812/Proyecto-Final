@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.SeleccionRolViewController"
+            prefWidth="1100" prefHeight="720"
+            style="-fx-background-color: #f3f4f6;">
+
+    <center>
+        <VBox spacing="18" alignment="CENTER" style="-fx-padding: 42;">
+            <Label text="InmoSmart" style="-fx-font-size: 38px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+            <Label text="Selecciona tu rol para ingresar a la plataforma" style="-fx-font-size: 16px; -fx-text-fill: #4b5563;"/>
+
+            <VBox spacing="12" maxWidth="460" style="-fx-background-color: white; -fx-padding: 28; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-background-radius: 8;">
+                <GridPane hgap="12" vgap="12">
+                    <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtNombre" promptText="Nombre completo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Identificacion:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtIdentificacion" promptText="Documento" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Telefono:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtTelefono" promptText="Telefono" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Correo:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtCorreo" promptText="correo@ejemplo.com" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Comprador" onAction="#ingresarComprador" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                    <Button text="Vendedor" onAction="#ingresarVendedor" style="-fx-background-color: #059669; -fx-text-fill: white;"/>
+                    <Button text="Administrador" onAction="#ingresarAdministrador"/>
+                </HBox>
+
+                <Label fx:id="lblMensaje" wrapText="true" style="-fx-text-fill: #b91c1c;"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

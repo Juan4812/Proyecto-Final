@@ -102,6 +102,6 @@ public abstract class Usuario {
 
     @Override
     public String toString() {
-        return id + " - " + nombre + " - " + getTipoUsuario() + " - " + clasificacion + " (" + puntosReputacion + " pts)";
+        return "ID: " + id + " - " + nombre + " - " + getTipoUsuario() + " - " + clasificacion + " (" + puntosReputacion + " pts)";
     }
 }

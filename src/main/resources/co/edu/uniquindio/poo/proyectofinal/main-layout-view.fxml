@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.MainLayoutViewController"
+            prefWidth="1100" prefHeight="720"
+            style="-fx-background-color: #f9fafb;">
+
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 16; -fx-background-color: #111827;">
+            <Label text="InmoSmart" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUsuario" style="-fx-text-fill: #e5e7eb; -fx-font-size: 13px;"/>
+            <Button text="Salir" onAction="#cerrarSesion"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contenedorPrincipal" style="-fx-padding: 18;"/>
+    </center>
+</BorderPane>

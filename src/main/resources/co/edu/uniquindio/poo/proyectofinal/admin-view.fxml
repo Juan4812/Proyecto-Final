@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.AdminViewController"
+            style="-fx-background-color: white;">
+
+    <top>
+        <VBox spacing="8" style="-fx-padding: 0 0 12 0;">
+            <Label text="Panel administrador" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+            <HBox spacing="10">
+                <Button text="Actualizar todo" onAction="#cargarDatos" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                <Label fx:id="lblMensaje" style="-fx-text-fill: #374151;"/>
+            </HBox>
+            <Label fx:id="lblResumen" wrapText="true" style="-fx-text-fill: #4b5563;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabPaneAdmin" tabClosingPolicy="UNAVAILABLE">
+            <Tab text="Reporte general">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <TextArea fx:id="txtReporte" editable="false" wrapText="true"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Usuarios">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaUsuarios"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Inmuebles">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaInmuebles"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Publicaciones">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaPublicaciones"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Ofertas">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaOfertas"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Transacciones">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaTransacciones"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Alertas">
+                <BorderPane style="-fx-padding: 14;">
+                    <center>
+                        <ListView fx:id="listaAlertas"/>
+                    </center>
+                </BorderPane>
+            </Tab>
+
+            <Tab text="Vendidos y arrendados">
+                <SplitPane dividerPositions="0.5" style="-fx-padding: 14;">
+                    <VBox spacing="8">
+                        <Label text="Inmuebles vendidos" style="-fx-font-weight: bold;"/>
+                        <ListView fx:id="listaVendidos"/>
+                    </VBox>
+                    <VBox spacing="8">
+                        <Label text="Inmuebles arrendados" style="-fx-font-weight: bold;"/>
+                        <ListView fx:id="listaArrendados"/>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

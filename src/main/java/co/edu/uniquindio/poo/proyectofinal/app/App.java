@@ -1,23 +1,23 @@
 package co.edu.uniquindio.poo.proyectofinal.app;
 
+import co.edu.uniquindio.poo.proyectofinal.model.Inmobiliaria;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private static final Inmobiliaria inmobiliaria = new Inmobiliaria("Inmobiliaria", "123");
+
+    public static Inmobiliaria getInmobiliaria() {
+        return inmobiliaria;
+    }
+
     @Override
-    public void start(Stage stage) {
-        Label titulo = new Label("Inmobiliaria InmoSmart");
-
-        VBox root = new VBox(titulo);
-        root.setSpacing(20);
-        root.setStyle("-fx-padding: 30; -fx-alignment: center;");
-
-        Scene scene = new Scene(root, 800, 500);
-
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/poo/proyectofinal/seleccion-rol-view.fxml"));
+        Scene scene = new Scene(loader.load(), 1000, 650);
         stage.setTitle("Inmobiliaria");
         stage.setScene(scene);
         stage.show();

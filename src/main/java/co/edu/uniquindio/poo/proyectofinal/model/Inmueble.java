@@ -15,7 +15,8 @@ public class Inmueble {
     public Inmueble(int codigo, String direccion, String ciudad,
                     double area, double precio, TipoInmueble tipo, Vendedor vendedor) {
         if (tipo == null) throw new IllegalArgumentException("El tipo de inmueble es obligatorio");
-        if (direccion == null || direccion.trim().isEmpty()) throw new IllegalArgumentException("La direccion es obligatoria");
+        if (direccion == null || direccion.trim().isEmpty())
+            throw new IllegalArgumentException("La direccion es obligatoria");
         if (ciudad == null || ciudad.trim().isEmpty()) throw new IllegalArgumentException("La ciudad es obligatoria");
         if (area <= 0) throw new IllegalArgumentException("El area debe ser mayor a 0");
         if (precio <= 0) throw new IllegalArgumentException("El precio debe ser mayor a 0");
@@ -31,14 +32,37 @@ public class Inmueble {
         this.vendedor = vendedor;
     }
 
-    public int getCodigo() { return codigo; }
-    public TipoInmueble getTipo() { return tipo; }
-    public String getDireccion() { return direccion; }
-    public String getCiudad() { return ciudad; }
-    public double getArea() { return area; }
-    public double getPrecio() { return precio; }
-    public EstadoInmueble getEstado() { return estado; }
-    public Vendedor getVendedor() { return vendedor; }
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public TipoInmueble getTipo() {
+        return tipo;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public EstadoInmueble getEstado() {
+        return estado;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
 
     public void setPrecio(double precio) {
         if (precio <= 0) throw new IllegalArgumentException("El precio debe ser mayor a 0");
@@ -56,6 +80,15 @@ public class Inmueble {
 
     @Override
     public String toString() {
-        return codigo + " - " + tipo + " en " + ciudad + " - $" + precio + " - " + estado;
+        return "Inmueble: " +
+                "\nCodigo: " + codigo +
+                "\nDireccion: " + direccion +
+                "\nCiudad: " + ciudad +
+                "\nArea: " + area +
+                "\n$: " + precio +
+                "\nTipo: "+ tipo +
+                "\nEstado : "+ estado +
+                "\nVendedor : "+ vendedor;
     }
+
 }
