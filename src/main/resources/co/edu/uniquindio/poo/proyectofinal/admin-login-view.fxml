@@ -7,7 +7,8 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.AdminLoginViewController"
             prefWidth="1100" prefHeight="720"
-            style="-fx-background-color: #f3f4f6;">
+            stylesheets="@app-styles.css"
+            styleClass="login-background">
 
     <center>
         <VBox spacing="18" alignment="CENTER" style="-fx-padding: 42;">
@@ -16,7 +17,7 @@
 
             <TabPane maxWidth="520" tabClosingPolicy="UNAVAILABLE">
                 <Tab text="Inicio de sesion">
-                    <VBox spacing="14" style="-fx-background-color: white; -fx-padding: 28; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-background-radius: 8;">
+                    <VBox spacing="14" styleClass="login-card">
                         <GridPane hgap="12" vgap="12">
                             <Label text="Usuario:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                             <TextField fx:id="txtUsuarioLogin" promptText="Usuario" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
@@ -33,7 +34,7 @@
                 </Tab>
 
                 <Tab text="Registro administrador">
-                    <VBox spacing="14" style="-fx-background-color: white; -fx-padding: 28; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-background-radius: 8;">
+                    <VBox spacing="14" styleClass="login-card">
                         <GridPane hgap="12" vgap="12">
                             <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                             <TextField fx:id="txtNombreRegistro" promptText="Nombre completo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>

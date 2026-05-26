@@ -9,7 +9,7 @@
             style="-fx-background-color: white;">
 
     <top>
-        <VBox spacing="6" style="-fx-padding: 0 0 12 0;">
+        <VBox spacing="6" style="-fx-padding: 10;">
             <Label text="Panel comprador" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
             <Label fx:id="lblPerfil" style="-fx-text-fill: #4b5563;"/>
         </VBox>
@@ -100,6 +100,6 @@
     </center>
 
     <bottom>
-        <Label fx:id="lblMensaje" wrapText="true" style="-fx-padding: 10 0 0 0; -fx-text-fill: #374151;"/>
+        <Label fx:id="lblMensaje" wrapText="true" style="-fx-padding: 10; -fx-text-fill: #374151;"/>
     </bottom>
 </BorderPane>
