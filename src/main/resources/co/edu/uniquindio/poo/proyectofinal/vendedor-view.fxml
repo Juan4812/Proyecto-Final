@@ -9,7 +9,7 @@
             style="-fx-background-color: white;">
 
     <top>
-        <VBox spacing="6" style="-fx-padding: 10;">
+        <VBox spacing="6" style="-fx-padding: 0 0 12 0;">
             <Label text="Panel vendedor" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
             <Label fx:id="lblPerfil" style="-fx-text-fill: #4b5563;"/>
         </VBox>
@@ -20,14 +20,20 @@
             <Tab text="Mis inmuebles">
                 <BorderPane style="-fx-padding: 14;">
                     <top>
-                        <VBox spacing="10">
-                            <GridPane hgap="10" vgap="10">
+                        <VBox spacing="8">
+                            <GridPane hgap="10" vgap="4">
                                 <TextField fx:id="txtCodigo" promptText="Codigo" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="txtDireccion" promptText="Direccion" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
                                 <TextField fx:id="txtCiudad" promptText="Ciudad" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                                <TextField fx:id="txtArea" promptText="Area" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                                <TextField fx:id="txtPrecio" promptText="Precio" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                                <ComboBox fx:id="cbTipoInmueble" promptText="Tipo inmueble" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+
+                                <Label fx:id="lblErrorCodigo" textFill="#dc2626" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+
+                                <TextField fx:id="txtArea" promptText="Area" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPrecio" promptText="Precio" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                <ComboBox fx:id="cbTipoInmueble" promptText="Tipo inmueble" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+
+                                <Label fx:id="lblErrorArea" textFill="#dc2626" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <Label fx:id="lblErrorPrecio" textFill="#dc2626" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
                             </GridPane>
 
                             <HBox spacing="10" alignment="CENTER_LEFT">
@@ -74,7 +80,7 @@
                             <Button text="Cargar todas las ofertas" onAction="#cargarOfertasRecibidas"/>
                             <Button text="Aceptar oferta" onAction="#aceptarOferta" style="-fx-background-color: #059669; -fx-text-fill: white;"/>
                             <Button text="Rechazar oferta" onAction="#rechazarOferta" style="-fx-background-color: #dc2626; -fx-text-fill: white;"/>
-                            <Label text="Para aceptar, selecciona VENTA o ARRIENDO en la pestaña Publicaciones." style="-fx-text-fill: #6b7280;"/>
+                            <Label text="La oferta se acepta usando la operacion definida en la publicacion." style="-fx-text-fill: #6b7280;"/>
                         </HBox>
                     </top>
 
@@ -107,6 +113,6 @@
     </center>
 
     <bottom>
-        <Label fx:id="lblMensaje" wrapText="true" style="-fx-padding: 10; -fx-text-fill: #374151;"/>
+        <Label fx:id="lblMensaje" wrapText="true" style="-fx-padding: 10 0 0 0; -fx-text-fill: #dc2626; -fx-font-weight: bold;"/>
     </bottom>
 </BorderPane>

@@ -478,10 +478,32 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     }
 
     public void cambiarPrecioInmueble(Inmueble inmueble, double nuevoPrecio) {
-        if (!listaInmuebles.contains(inmueble)) throw new IllegalArgumentException("El inmueble no esta registrado");
+        if (!listaInmuebles.contains(inmueble)) {
+            throw new IllegalArgumentException("El inmueble no esta registrado");
+        }
+
         inmueble.setPrecio(nuevoPrecio);
-        crearAlerta(inmueble.getVendedor(), "El precio del inmueble " + inmueble.getCodigo() + " fue actualizado", TipoAlerta.CORREO);
+
+        crearAlerta(
+                inmueble.getVendedor(),
+                "El precio del inmueble " + inmueble.getCodigo() + " fue actualizado",
+                TipoAlerta.CORREO
+        );
+
+        ArrayList<Comprador> compradoresNotificados = new ArrayList<>();
+
+        for (Oferta oferta : listaOfertas) {
+            if (oferta.getInmueble() == inmueble && !compradoresNotificados.contains(oferta.getComprador())) {
+                crearAlerta(
+                        oferta.getComprador(),
+                        "Cambio el precio del inmueble " + inmueble.getCodigo() + ". Nuevo precio: $" + nuevoPrecio,
+                        TipoAlerta.CORREO
+                );
+                compradoresNotificados.add(oferta.getComprador());
+            }
+        }
     }
+
 
     private void validarUsuarioNoRegistrado(String identificacion) {
         for (Usuario usuario : listaUsuarios) {
