@@ -46,6 +46,8 @@ public class CompradorViewController {
         cbAccionPublicacion.getItems().setAll("Ofertar", "Ver detalle");
         cbAccionBusqueda.getItems().setAll("Ofertar", "Ver detalle");
 
+        configurarVistaPublicaciones();
+
         listaPublicaciones.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, publicacion) -> {
             if (publicacion != null) {
                 inmuebleSeleccionado = publicacion.getInmueble();
@@ -210,6 +212,32 @@ public class CompradorViewController {
         cbAccionBusqueda.setValue(null);
         listaInmuebles.getItems().clear();
         lblMensaje.setText("Filtros limpiados");
+    }
+
+    private void configurarVistaPublicaciones() {
+        listaPublicaciones.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Publicacion publicacion, boolean empty) {
+                super.updateItem(publicacion, empty);
+
+                if (empty || publicacion == null) {
+                    setText(null);
+                } else {
+                    Inmueble inmueble = publicacion.getInmueble();
+                    setText(
+                            "Publicacion " + publicacion.getCodigoPublicacion()
+                                    + " - " + publicacion.getTipoOperacion()
+                                    + "\nDescripcion: " + publicacion.getDescripcion()
+                                    + "\nCodigo: " + inmueble.getCodigo()
+                                    + " | Tipo: " + inmueble.getTipo()
+                                    + " | Ciudad: " + inmueble.getCiudad()
+                                    + " | Precio: $" + inmueble.getPrecio()
+                                    + " | Area: " + inmueble.getArea()
+                                    + "\nVendedor: " + inmueble.getVendedor().getNombre()
+                    );
+                }
+            }
+        });
     }
 
     private void actualizarPerfil() {

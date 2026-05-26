@@ -10,11 +10,9 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     private static final int PUNTOS_COMPRAR_INMUEBLE = 50;
     private static final int PUNTOS_COMPLETAR_TRANSACCION = 100;
 
-    //Atributos
     private String nombre, nit;
     private int siguienteIdUsuario;
 
-    //relaciones
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<Inmueble> listaInmuebles;
     private ArrayList<Publicacion> listaPublicaciones;
@@ -24,11 +22,9 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     private ArrayList<HistorialBusqueda> listaHistorialBusquedas;
     private ArrayList<Administrador> listaAdministradores;
 
-
-    //Constructor
     public Inmobiliaria(String nombre, String nit) {
-        this.nombre=nombre;
-        this.nit=nit;
+        this.nombre = nombre;
+        this.nit = nit;
         this.siguienteIdUsuario = 1;
         listaUsuarios = new ArrayList<>();
         listaInmuebles = new ArrayList<>();
@@ -39,15 +35,12 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         listaHistorialBusquedas = new ArrayList<>();
         listaAdministradores = new ArrayList<>();
         registrarAdministrador("Administrador principal", "admin", "admin");
-
     }
 
-    //Metodossssss
-
-    //Get and Set
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -55,7 +48,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     public String getNit() {
         return nit;
     }
-
 
     public ArrayList<Usuario> getListaUsuarios() {
         return new ArrayList<>(listaUsuarios);
@@ -113,7 +105,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return new ArrayList<>(listaAdministradores);
     }
 
-    //Metodo para registrar un comprador
     public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo) {
         validarUsuarioNoRegistrado(identificacion);
         Comprador comprador = new Comprador(generarIdUsuario(), nombre, identificacion, telefono, correo);
@@ -121,7 +112,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return comprador;
     }
 
-    //Metodo para registrar un vendedor
     public Vendedor registrarVendedor(String nombre, String identificacion, String telefono, String correo) {
         validarUsuarioNoRegistrado(identificacion);
         Vendedor vendedor = new Vendedor(generarIdUsuario(), nombre, identificacion, telefono, correo);
@@ -152,7 +142,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         administrador.cambiarContrasena(nuevaContrasena, confirmacionContrasena);
     }
 
-    //Metodo para registrar un inmueble
     public Inmueble registrarInmueble(int codigo, String direccion, String ciudad, double area,
                                       double precio, TipoInmueble tipo, Vendedor vendedor) {
         if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
@@ -166,7 +155,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return inmueble;
     }
 
-    //Metodo para publicar un inmueble
     @Override
     public Publicacion publicarInmueble(Vendedor vendedor, Inmueble inmueble, String descripcion, TipoOperacion tipoOperacion) {
         if (!esVendedorRegistrado(vendedor)) throw new IllegalArgumentException("El vendedor no esta registrado");
@@ -184,7 +172,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return publicacion;
     }
 
-    //Metodo para buscar un inmueble
     @Override
     public ArrayList<Inmueble> buscarInmuebles(FiltroBusqueda filtro) {
         if (filtro == null) throw new IllegalArgumentException("El filtro de busqueda es obligatorio");
@@ -206,7 +193,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         listaHistorialBusquedas.add(new HistorialBusqueda(comprador, filtro, LocalDate.now()));
         return buscarInmuebles(filtro);
     }
-
 
     private void notificarCompradoresPorInmuebleSimilar(Publicacion publicacionNueva) {
         ArrayList<Comprador> listaCompradoresNotificados = new ArrayList<>();
@@ -277,7 +263,6 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return null;
     }
 
-
     @Override
     public Oferta realizarOferta(Comprador comprador, Inmueble inmueble, double valorOferta) {
         if (!esCompradorRegistrado(comprador)) throw new IllegalArgumentException("El comprador no esta registrado");
@@ -313,6 +298,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
                 inmueble,
                 tipoOperacion
         );
+
         inmueble.setPrecio(oferta.getValorOferta());
         listaTransacciones.add(transaccion);
         oferta.getComprador().sumarReputacion(PUNTOS_COMPRAR_INMUEBLE);
@@ -320,7 +306,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         inmueble.getVendedor().sumarReputacion(PUNTOS_COMPLETAR_TRANSACCION);
 
         rechazarOfertasPendientesDelInmueble(inmueble, oferta);
-        crearAlerta(oferta.getComprador(), "Tu oferta fue aceptada", TipoAlerta.CORREO);
+        crearAlerta(oferta.getComprador(), "Tu oferta fue aceptada", TipoAlerta.SMS);
 
         return transaccion;
     }
@@ -329,9 +315,8 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     public void rechazarOferta(Oferta oferta) {
         if (!listaOfertas.contains(oferta)) throw new IllegalArgumentException("La oferta no esta registrada");
         oferta.rechazar();
-        crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada", TipoAlerta.CORREO);
+        crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada", TipoAlerta.SMS);
     }
-
 
     @Override
     public ArrayList<Inmueble> recomendarInmuebles(Comprador comprador) {
@@ -344,6 +329,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
 
         return listaInmueblesRecomendados;
     }
+
     private void agregarRecomendacionesPorHistorialBusqueda(Comprador comprador, ArrayList<Inmueble> listaInmueblesRecomendados) {
         for (HistorialBusqueda historialBusqueda : listaHistorialBusquedas) {
             if (historialBusqueda.comprador() == comprador) {
@@ -482,28 +468,57 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
             throw new IllegalArgumentException("El inmueble no esta registrado");
         }
 
+        double precioAnterior = inmueble.getPrecio();
         inmueble.setPrecio(nuevoPrecio);
 
         crearAlerta(
                 inmueble.getVendedor(),
-                "El precio del inmueble " + inmueble.getCodigo() + " fue actualizado",
+                "El precio del inmueble " + inmueble.getCodigo()
+                        + " cambio de $" + precioAnterior + " a $" + nuevoPrecio,
                 TipoAlerta.CORREO
         );
 
+        notificarCompradoresConOfertaPorCambioPrecio(inmueble, nuevoPrecio);
+        notificarCompradoresConHistorialPorCambioPrecio(inmueble, nuevoPrecio);
+    }
+
+    private void notificarCompradoresConOfertaPorCambioPrecio(Inmueble inmueble, double nuevoPrecio) {
         ArrayList<Comprador> compradoresNotificados = new ArrayList<>();
 
         for (Oferta oferta : listaOfertas) {
-            if (oferta.getInmueble() == inmueble && !compradoresNotificados.contains(oferta.getComprador())) {
+            Comprador comprador = oferta.getComprador();
+
+            if (oferta.getInmueble() == inmueble && !compradoresNotificados.contains(comprador)) {
                 crearAlerta(
-                        oferta.getComprador(),
-                        "Cambio el precio del inmueble " + inmueble.getCodigo() + ". Nuevo precio: $" + nuevoPrecio,
-                        TipoAlerta.CORREO
+                        comprador,
+                        "Cambio el precio del inmueble " + inmueble.getCodigo()
+                                + ". Nuevo precio: $" + nuevoPrecio,
+                        TipoAlerta.WHATSAPP
                 );
-                compradoresNotificados.add(oferta.getComprador());
+                compradoresNotificados.add(comprador);
             }
         }
     }
 
+    private void notificarCompradoresConHistorialPorCambioPrecio(Inmueble inmueble, double nuevoPrecio) {
+        ArrayList<Comprador> compradoresNotificados = new ArrayList<>();
+
+        for (HistorialBusqueda historialBusqueda : listaHistorialBusquedas) {
+            Comprador comprador = historialBusqueda.comprador();
+
+            if (!compradoresNotificados.contains(comprador)
+                    && cumpleFiltroBusqueda(inmueble, historialBusqueda.filtroBusqueda())) {
+                crearAlerta(
+                        comprador,
+                        "Un inmueble relacionado con tu busqueda cambio de precio. Codigo: "
+                                + inmueble.getCodigo()
+                                + ", nuevo precio: $" + nuevoPrecio,
+                        TipoAlerta.WHATSAPP
+                );
+                compradoresNotificados.add(comprador);
+            }
+        }
+    }
 
     private void validarUsuarioNoRegistrado(String identificacion) {
         for (Usuario usuario : listaUsuarios) {
@@ -560,7 +575,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         for (Oferta oferta : listaOfertas) {
             if (oferta.getInmueble() == inmueble && oferta != ofertaAceptada && oferta.getEstado() == EstadoOferta.PENDIENTE) {
                 oferta.rechazar();
-                crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada porque otra oferta fue aceptada", TipoAlerta.CORREO);
+                crearAlerta(oferta.getComprador(), "Tu oferta fue rechazada porque otra oferta fue aceptada", TipoAlerta.SMS);
             }
         }
     }
