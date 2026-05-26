@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.proyectofinal.viewController;
 
 import co.edu.uniquindio.poo.proyectofinal.app.App;
+import co.edu.uniquindio.poo.proyectofinal.model.Administrador;
 import co.edu.uniquindio.poo.proyectofinal.model.Comprador;
 import co.edu.uniquindio.poo.proyectofinal.model.Vendedor;
 import javafx.fxml.FXML;
@@ -18,10 +19,12 @@ public class MainLayoutViewController {
 
     private Comprador compradorActual;
     private Vendedor vendedorActual;
+    private Administrador administradorActual;
 
     public void iniciarComoComprador(Comprador comprador) {
         compradorActual = comprador;
         vendedorActual = null;
+        administradorActual = null;
         lblUsuario.setText(comprador.getNombre() + " | Comprador | " + comprador.getClasificacion());
         cargarVistaComprador();
     }
@@ -29,14 +32,16 @@ public class MainLayoutViewController {
     public void iniciarComoVendedor(Vendedor vendedor) {
         vendedorActual = vendedor;
         compradorActual = null;
+        administradorActual = null;
         lblUsuario.setText(vendedor.getNombre() + " | Vendedor | " + vendedor.getClasificacion());
         cargarVistaVendedor();
     }
 
-    public void iniciarComoAdministrador() {
+    public void iniciarComoAdministrador(Administrador administrador) {
         compradorActual = null;
         vendedorActual = null;
-        lblUsuario.setText("Administrador");
+        administradorActual = administrador;
+        lblUsuario.setText(administrador.getNombre() + " | Administrador");
         cargarVistaAdministrador();
     }
 
@@ -69,6 +74,7 @@ public class MainLayoutViewController {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/poo/proyectofinal/admin-view.fxml"));
             Node vista = loader.load();
             AdminViewController controller = loader.getController();
+            controller.setAdministradorActual(administradorActual);
             controller.cargarDatos();
             contenedorPrincipal.getChildren().setAll(vista);
         } catch (Exception e) {

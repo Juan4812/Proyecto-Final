@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.poo.proyectofinal.viewController.AdminLoginViewController"
+            prefWidth="1100" prefHeight="720"
+            style="-fx-background-color: #f3f4f6;">
+
+    <center>
+        <VBox spacing="18" alignment="CENTER" style="-fx-padding: 42;">
+            <Label text="Administrador" style="-fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+            <Label text="Inicia sesion o registra una cuenta administrativa" style="-fx-font-size: 15px; -fx-text-fill: #4b5563;"/>
+
+            <TabPane maxWidth="520" tabClosingPolicy="UNAVAILABLE">
+                <Tab text="Inicio de sesion">
+                    <VBox spacing="14" style="-fx-background-color: white; -fx-padding: 28; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-background-radius: 8;">
+                        <GridPane hgap="12" vgap="12">
+                            <Label text="Usuario:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="txtUsuarioLogin" promptText="Usuario" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                            <Label text="Contraseña:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <PasswordField fx:id="txtContrasenaLogin" promptText="Contraseña" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        </GridPane>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Volver" onAction="#volver"/>
+                            <Button text="Ingresar" onAction="#iniciarSesion" style="-fx-background-color: #111827; -fx-text-fill: white;"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Registro administrador">
+                    <VBox spacing="14" style="-fx-background-color: white; -fx-padding: 28; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-background-radius: 8;">
+                        <GridPane hgap="12" vgap="12">
+                            <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="txtNombreRegistro" promptText="Nombre completo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                            <Label text="Usuario:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <TextField fx:id="txtUsuarioRegistro" promptText="Usuario administrador" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                            <Label text="Contraseña:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <PasswordField fx:id="txtContrasenaRegistro" promptText="Contraseña" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        </GridPane>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="Volver" onAction="#volver"/>
+                            <Button text="Registrar" onAction="#registrarAdministrador" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+            </TabPane>
+
+            <Label fx:id="lblMensaje" wrapText="true" maxWidth="520" style="-fx-text-fill: #b91c1c;"/>
+        </VBox>
+    </center>
+</BorderPane>

@@ -66,11 +66,9 @@ public class SeleccionRolViewController {
     @FXML
     private void ingresarAdministrador() {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/poo/proyectofinal/main-layout-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/poo/proyectofinal/admin-login-view.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 720);
 
-            MainLayoutViewController controller = loader.getController();
-            controller.iniciarComoAdministrador();
 
             Stage stage = (Stage) txtNombre.getScene().getWindow();
             stage.setScene(scene);

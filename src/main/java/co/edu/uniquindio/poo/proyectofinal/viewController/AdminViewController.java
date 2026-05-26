@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.proyectofinal.viewController;
 
 import co.edu.uniquindio.poo.proyectofinal.app.App;
+import co.edu.uniquindio.poo.proyectofinal.controller.AdministradorController;
 import co.edu.uniquindio.poo.proyectofinal.controller.AlertaController;
 import co.edu.uniquindio.poo.proyectofinal.controller.InmuebleController;
 import co.edu.uniquindio.poo.proyectofinal.controller.OfertaController;
@@ -8,6 +9,7 @@ import co.edu.uniquindio.poo.proyectofinal.controller.PublicacionController;
 import co.edu.uniquindio.poo.proyectofinal.controller.ReporteController;
 import co.edu.uniquindio.poo.proyectofinal.controller.TransaccionController;
 import co.edu.uniquindio.poo.proyectofinal.controller.UsuarioController;
+import co.edu.uniquindio.poo.proyectofinal.model.Administrador;
 import co.edu.uniquindio.poo.proyectofinal.model.Alerta;
 import co.edu.uniquindio.poo.proyectofinal.model.Inmueble;
 import co.edu.uniquindio.poo.proyectofinal.model.Oferta;
@@ -17,6 +19,7 @@ import co.edu.uniquindio.poo.proyectofinal.model.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TabPane;
 
@@ -25,6 +28,9 @@ public class AdminViewController {
     @FXML private TextArea txtReporte;
     @FXML private Label lblResumen;
     @FXML private Label lblMensaje;
+    @FXML private Label lblMensajeContrasena;
+    @FXML private PasswordField txtNuevaContrasena;
+    @FXML private PasswordField txtConfirmarContrasena;
     @FXML private TabPane tabPaneAdmin;
 
     @FXML private ListView<Usuario> listaUsuarios;
@@ -36,6 +42,8 @@ public class AdminViewController {
     @FXML private ListView<Inmueble> listaVendidos;
     @FXML private ListView<Inmueble> listaArrendados;
 
+    private Administrador administradorActual;
+
     private final ReporteController reporteController = new ReporteController(App.getInmobiliaria());
     private final UsuarioController usuarioController = new UsuarioController(App.getInmobiliaria());
     private final InmuebleController inmuebleController = new InmuebleController(App.getInmobiliaria());
@@ -43,6 +51,11 @@ public class AdminViewController {
     private final OfertaController ofertaController = new OfertaController(App.getInmobiliaria());
     private final TransaccionController transaccionController = new TransaccionController(App.getInmobiliaria());
     private final AlertaController alertaController = new AlertaController(App.getInmobiliaria());
+    private final AdministradorController administradorController = new AdministradorController(App.getInmobiliaria());
+
+    public void setAdministradorActual(Administrador administradorActual) {
+        this.administradorActual = administradorActual;
+    }
 
     @FXML
     public void cargarDatos() {
@@ -64,6 +77,22 @@ public class AdminViewController {
         );
 
         lblMensaje.setText("Datos actualizados");
+    }
+
+    @FXML
+    private void cambiarContrasena() {
+        try {
+            administradorController.cambiarContrasena(
+                    administradorActual,
+                    txtNuevaContrasena.getText(),
+                    txtConfirmarContrasena.getText()
+            );
+            txtNuevaContrasena.clear();
+            txtConfirmarContrasena.clear();
+            lblMensajeContrasena.setText("Contrasena actualizada correctamente");
+        } catch (Exception e) {
+            lblMensajeContrasena.setText(e.getMessage());
+        }
     }
 
     public void seleccionarTab(int indice) {

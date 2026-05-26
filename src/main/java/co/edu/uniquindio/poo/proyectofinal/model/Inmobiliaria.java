@@ -22,6 +22,7 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
     private ArrayList<Transaccion> listaTransacciones;
     private ArrayList<Alerta> listaAlertas;
     private ArrayList<HistorialBusqueda> listaHistorialBusquedas;
+    private ArrayList<Administrador> listaAdministradores;
 
 
     //Constructor
@@ -36,6 +37,8 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         listaTransacciones = new ArrayList<>();
         listaAlertas = new ArrayList<>();
         listaHistorialBusquedas = new ArrayList<>();
+        listaAdministradores = new ArrayList<>();
+        registrarAdministrador("Administrador principal", "admin", "admin");
 
     }
 
@@ -106,6 +109,10 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         return new ArrayList<>(listaHistorialBusquedas);
     }
 
+    public ArrayList<Administrador> getListaAdministradores() {
+        return new ArrayList<>(listaAdministradores);
+    }
+
     //Metodo para registrar un comprador
     public Comprador registrarComprador(String nombre, String identificacion, String telefono, String correo) {
         validarUsuarioNoRegistrado(identificacion);
@@ -120,6 +127,29 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         Vendedor vendedor = new Vendedor(generarIdUsuario(), nombre, identificacion, telefono, correo);
         listaUsuarios.add(vendedor);
         return vendedor;
+    }
+
+    public Administrador registrarAdministrador(String nombre, String usuario, String contrasena) {
+        validarAdministradorNoRegistrado(usuario);
+        Administrador administrador = new Administrador(nombre, usuario, contrasena);
+        listaAdministradores.add(administrador);
+        return administrador;
+    }
+
+    public Administrador autenticarAdministrador(String usuario, String contrasena) {
+        for (Administrador administrador : listaAdministradores) {
+            if (administrador.tieneCredenciales(usuario, contrasena)) {
+                return administrador;
+            }
+        }
+        return null;
+    }
+
+    public void cambiarContrasenaAdministrador(Administrador administrador, String nuevaContrasena, String confirmacionContrasena) {
+        if (!listaAdministradores.contains(administrador)) {
+            throw new IllegalArgumentException("El administrador no esta registrado");
+        }
+        administrador.cambiarContrasena(nuevaContrasena, confirmacionContrasena);
     }
 
     //Metodo para registrar un inmueble
@@ -457,6 +487,14 @@ public class Inmobiliaria implements IOperacionesInmobiliarias {
         for (Usuario usuario : listaUsuarios) {
             if (usuario.getIdentificacion().equals(identificacion)) {
                 throw new IllegalArgumentException("El usuario ya esta registrado");
+            }
+        }
+    }
+
+    private void validarAdministradorNoRegistrado(String usuario) {
+        for (Administrador administrador : listaAdministradores) {
+            if (administrador.getUsuario().equals(usuario)) {
+                throw new IllegalArgumentException("El administrador ya esta registrado");
             }
         }
     }

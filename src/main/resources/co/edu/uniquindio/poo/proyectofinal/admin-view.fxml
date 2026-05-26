@@ -89,6 +89,31 @@
                     </VBox>
                 </SplitPane>
             </Tab>
+
+            <Tab text="Cuenta">
+                <BorderPane style="-fx-padding: 14;">
+                    <top>
+                        <Label text="Cambio de contraseña" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+                    </top>
+                    <center>
+                        <VBox spacing="14" maxWidth="430" style="-fx-padding: 18 0 0 0;">
+                            <GridPane hgap="12" vgap="12">
+                                <Label text="Nueva contraseña:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="txtNuevaContrasena" promptText="Nueva contraseña" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Confirmar contraseña:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="txtConfirmarContrasena" promptText="Confirmar contraseña" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+
+                            <HBox spacing="10" alignment="CENTER_RIGHT">
+                                <Button text="Cambiar contraseña" onAction="#cambiarContrasena" style="-fx-background-color: #2563eb; -fx-text-fill: white;"/>
+                            </HBox>
+
+                            <Label fx:id="lblMensajeContrasena" wrapText="true" style="-fx-text-fill: #b91c1c;"/>
+                        </VBox>
+                    </center>
+                </BorderPane>
+            </Tab>
         </TabPane>
     </center>
 </BorderPane>

@@ -71,6 +71,61 @@ class InmobiliariaTest {
     }
 
     @Test
+    void registrarYAutenticarAdministradorUsaListaIndependiente() {
+        Inmobiliaria inmobiliaria = crearInmobiliaria();
+
+        Administrador administradorDefecto = inmobiliaria.autenticarAdministrador("admin", "admin");
+        Administrador administrador = inmobiliaria.registrarAdministrador(
+                "Admin Principal", "admin2", "1234");
+
+        assertEquals(2, inmobiliaria.getListaAdministradores().size(),
+                "Debe existir el administrador por defecto y el nuevo administrador registrado.");
+        assertEquals(0, inmobiliaria.getListaUsuarios().size(),
+                "El administrador no debe guardarse como comprador ni vendedor.");
+        assertSame(administradorDefecto, inmobiliaria.autenticarAdministrador("admin", "admin"),
+                "El administrador por defecto debe ingresar con admin/admin.");
+        assertSame(administrador, inmobiliaria.autenticarAdministrador("admin2", "1234"),
+                "Las credenciales correctas deben permitir el ingreso.");
+        assertEquals(null, inmobiliaria.autenticarAdministrador("admin2", "0000"),
+                "Las credenciales incorrectas no deben autenticar.");
+
+        imprimirPrueba(
+                "registro y autenticacion de administrador",
+                "administradores=" + inmobiliaria.getListaAdministradores().size()
+                        + ", usuarios=" + inmobiliaria.getListaUsuarios().size(),
+                "administradores=2, usuarios=0"
+        );
+    }
+
+    @Test
+    void cambiarContrasenaAdministradorValidaConfirmacionLongitudYValorAnterior() {
+        Inmobiliaria inmobiliaria = crearInmobiliaria();
+        Administrador administrador = inmobiliaria.autenticarAdministrador("admin", "admin");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> inmobiliaria.cambiarContrasenaAdministrador(administrador, "admin", "admin"),
+                "No debe permitir repetir la contrasena anterior.");
+        assertThrows(IllegalArgumentException.class,
+                () -> inmobiliaria.cambiarContrasenaAdministrador(administrador, "1234", "1234"),
+                "No debe permitir contrasenas de 4 caracteres o menos.");
+        assertThrows(IllegalArgumentException.class,
+                () -> inmobiliaria.cambiarContrasenaAdministrador(administrador, "admin123", "admin321"),
+                "No debe permitir confirmaciones distintas.");
+
+        inmobiliaria.cambiarContrasenaAdministrador(administrador, "admin123", "admin123");
+
+        assertEquals(null, inmobiliaria.autenticarAdministrador("admin", "admin"),
+                "La contrasena anterior ya no debe funcionar.");
+        assertSame(administrador, inmobiliaria.autenticarAdministrador("admin", "admin123"),
+                "La nueva contrasena debe permitir iniciar sesion.");
+
+        imprimirPrueba(
+                "cambio de contrasena administrador",
+                inmobiliaria.autenticarAdministrador("admin", "admin123") == administrador,
+                true
+        );
+    }
+    @Test
     void registrarInmuebleValidaVendedorRegistradoYDatosDelInmueble() {
         Inmobiliaria inmobiliaria = crearInmobiliaria();
         Vendedor vendedor = inmobiliaria.registrarVendedor(
@@ -495,3 +550,4 @@ class InmobiliariaTest {
         );
     }
 }
+
